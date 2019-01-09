@@ -1,0 +1,13 @@
++----------------+
+| Header 0xBF 1B |
++----------------+
+| Packet Id  4B  |
++----------------+
+|  Size of the   |
+|  payload  4B   |
++----------------+
+|   Payload of   |
+| specified size |
++----------------+
+|  Checksum  1B  |
++----------------+
