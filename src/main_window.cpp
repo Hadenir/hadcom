@@ -55,7 +55,7 @@ bool MainWindow::setup()
     connect(m_localClient, SIGNAL(loggedIn(const QList<QString>&)), this, SLOT(on_loggedIn(const QList<QString>&)));
     connect(m_localClient, SIGNAL(clientJoined(QString)), this, SLOT(on_clientJoined(QString)));
     connect(m_localClient, SIGNAL(clientLeft(QString)), this, SLOT(on_clientLeft(QString)));
-    connect(m_localClient, SIGNAL(messageReceived(QString)), this, SLOT(on_messageReceived(QString)));
+    connect(m_localClient, SIGNAL(messageReceived(QString, QString)), this, SLOT(on_messageReceived(QString, QString)));
     m_localClient->setNickname(m_userInfo.nickname);
 
     qDebug() << "Created local client!";
@@ -95,8 +95,6 @@ void MainWindow::on_sendButton_clicked()
         return;
 
     m_localClient->sendMessage(message);
-
-    // chat->append(message);
 }
 
 void MainWindow::on_clientJoined(QString nickname)
@@ -118,9 +116,12 @@ void MainWindow::on_clientLeft(QString nickname)
     delete item;
 }
 
-void MainWindow::on_messageReceived(QString message)
+void MainWindow::on_messageReceived(QString sender, QString message)
 {
+    qDebug() << "Sender:" << sender;
     qDebug() << "Message:" << message;
+
+    chat->append("<" + sender + "> " + message);
 }
 
 void MainWindow::on_error()

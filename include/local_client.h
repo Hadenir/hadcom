@@ -23,7 +23,7 @@ signals:
 
     void clientLeft(QString nickname);
 
-    void messageReceived(QString message);
+    void messageReceived(QString sender, QString message);
 
 private slots:
     void on_connected();

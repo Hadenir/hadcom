@@ -27,7 +27,7 @@ private slots:
 
     void on_clientLeft(QString nickname);
 
-    void on_messageReceived(QString message);
+    void on_messageReceived(QString sender, QString message);
 
     void on_error();
 

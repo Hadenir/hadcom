@@ -6,6 +6,7 @@
 #include "packets/client_joined_packet.h"
 #include "packets/client_left_packet.h"
 #include "packets/clients_list_packet.h"
+#include "packets/chat_message_packet.h"
 
 Server::Server(QObject* parent)
         : QTcpServer(parent)
@@ -67,6 +68,15 @@ void Server::on_packetReceived(Packet* packet)
             connection->send(clientsListPacket);
 
             broadcast(ClientJoinedPacket(nickname));
+
+            delete packet;
+            break;
+        }
+        case 5:
+        {
+            ChatMessagePacket* chatMessagePacket = (ChatMessagePacket*) packet;
+
+            broadcast(*chatMessagePacket);
 
             delete packet;
             break;

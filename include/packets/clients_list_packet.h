@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QList>
+
 #include "packet.h"
 
 class ClientsListPacket : public Packet
