@@ -2,6 +2,7 @@
 
 #include <QTcpServer>
 #include <QMap>
+#include <QList>
 
 class Packet;
 class Connection;
@@ -17,6 +18,8 @@ public:
     bool bind(quint16 port);
 
     bool broadcast(const Packet& packet) const;
+
+    QList<QString> getClientsList() const;
 
 protected:
     void incomingConnection(qintptr descriptor) override;

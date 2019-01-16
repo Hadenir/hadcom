@@ -17,7 +17,7 @@ public:
 signals:
     void connected();
 
-    void loggedIn();
+    void loggedIn(const QList<QString>& nicknames);
 
     void clientJoined(QString nickname);
 

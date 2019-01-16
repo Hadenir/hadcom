@@ -19,7 +19,7 @@ public:
 private slots:
     void on_connected();
 
-    void on_loggedIn();
+    void on_loggedIn(const QList<QString>& nicknames);
 
     void on_sendButton_clicked();
 

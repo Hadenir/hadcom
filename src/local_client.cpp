@@ -4,6 +4,7 @@
 #include "packets/handshake_packet.h"
 #include "packets/client_joined_packet.h"
 #include "packets/client_left_packet.h"
+#include "packets/clients_list_packet.h"
 
 LocalClient::LocalClient(Connection* connection, QObject* parent)
         : RemoteClient(parent), m_connection(connection)
@@ -29,15 +30,15 @@ void LocalClient::on_packetReceived(Packet* packet)
     qDebug() << "Received packet of id " << packetId;
     switch(packetId)
     {
-        case 1:
-        {
-            HandshakePacket* handshakePacket = (HandshakePacket*) packet;
-            if(handshakePacket->getNickname() == getNickname())
-                emit loggedIn();
-
-            delete packet;
-            break;
-        }
+        // case 1:
+        // {
+        //     HandshakePacket* handshakePacket = (HandshakePacket*) packet;
+        //     if(handshakePacket->getNickname() == getNickname())
+        //         emit loggedIn();
+        //
+        //     delete packet;
+        //     break;
+        // }
         case 2:
         {
             ClientJoinedPacket* clientJoinedPacket = (ClientJoinedPacket*) packet;
@@ -50,6 +51,14 @@ void LocalClient::on_packetReceived(Packet* packet)
         {
             ClientLeftPacket* clientLeftPacket = (ClientLeftPacket*) packet;
             emit clientLeft(clientLeftPacket->getNickname());
+
+            delete packet;
+            break;
+        }
+        case 4:
+        {
+            ClientsListPacket* clientsListPacket = (ClientsListPacket*) packet;
+            emit loggedIn(clientsListPacket->getClients());
 
             delete packet;
             break;

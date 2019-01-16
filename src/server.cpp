@@ -5,6 +5,7 @@
 #include "packets/handshake_packet.h"
 #include "packets/client_joined_packet.h"
 #include "packets/client_left_packet.h"
+#include "packets/clients_list_packet.h"
 
 Server::Server(QObject* parent)
         : QTcpServer(parent)
@@ -21,6 +22,17 @@ bool Server::broadcast(const Packet& packet) const
     {
         connection->send(packet);
     }
+}
+
+QList<QString> Server::getClientsList() const
+{
+    QList<QString> clientsList;
+    clientsList.reserve(m_clients.size());
+
+    for(auto client : m_clients)
+        clientsList.push_back(client->getNickname());
+
+    return clientsList;
 }
 
 void Server::incomingConnection(qintptr descriptor)
@@ -51,7 +63,9 @@ void Server::on_packetReceived(Packet* packet)
             QString nickname = handshakePacket->getNickname();
             client->setNickname(nickname);
 
-            connection->send(*packet);
+            ClientsListPacket clientsListPacket(getClientsList());
+            connection->send(clientsListPacket);
+
             broadcast(ClientJoinedPacket(nickname));
 
             delete packet;

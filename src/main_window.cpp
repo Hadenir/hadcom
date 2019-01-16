@@ -52,7 +52,7 @@ bool MainWindow::setup()
 
     m_localClient = new LocalClient(connection, this);
     connect(m_localClient, SIGNAL(connected()), this, SLOT(on_connected()));
-    connect(m_localClient, SIGNAL(loggedIn()), this, SLOT(on_loggedIn()));
+    connect(m_localClient, SIGNAL(loggedIn(const QList<QString>&)), this, SLOT(on_loggedIn(const QList<QString>&)));
     connect(m_localClient, SIGNAL(clientJoined(QString)), this, SLOT(on_clientJoined(QString)));
     connect(m_localClient, SIGNAL(clientLeft(QString)), this, SLOT(on_clientLeft(QString)));
     connect(m_localClient, SIGNAL(messageReceived(QString)), this, SLOT(on_messageReceived(QString)));
@@ -73,9 +73,16 @@ void MainWindow::on_connected()
     m_progressDialog->setLabelText("Logging in...");
 }
 
-void MainWindow::on_loggedIn()
+void MainWindow::on_loggedIn(const QList<QString>& nicknames)
 {
     accountLabel->setText("Logged");
+
+    for(const auto& nickname : nicknames)
+    {
+        if(nickname != m_localClient->getNickname())
+            clientsList->addItem(nickname);
+    }
+
     m_progressDialog->reset();
 }
 
