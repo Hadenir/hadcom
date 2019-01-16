@@ -7,7 +7,9 @@
       <file path="$PROJECT_DIR$/src" />
     </sourceRoots>
     <excludeRoots>
+      <file path="$PROJECT_DIR$/bin" />
       <file path="$PROJECT_DIR$/forms" />
+      <file path="$PROJECT_DIR$/lib" />
       <file path="$PROJECT_DIR$/notes" />
     </excludeRoots>
   </component>
