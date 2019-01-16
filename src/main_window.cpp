@@ -96,12 +96,16 @@ void MainWindow::on_clientJoined(QString nickname)
 {
     qDebug() << "Joined:" << nickname;
 
+    chat->append("<html><i>" + nickname + " joined!</i></html>");
+
     clientsList->addItem(nickname);
 }
 
 void MainWindow::on_clientLeft(QString nickname)
 {
     qDebug() << "Left:" << nickname;
+
+    chat->append("<html><i>" + nickname + " left!</i></html>");
 
     QListWidgetItem* item = clientsList->findItems(nickname, Qt::MatchExactly)[0];
     delete item;
