@@ -14,7 +14,7 @@ Server::Server(QObject* parent)
 
 bool Server::bind(quint16 port)
 {
-    return listen(QHostAddress::LocalHost, port);
+    return listen(QHostAddress::Any, port);
 }
 
 bool Server::broadcast(const Packet& packet) const
