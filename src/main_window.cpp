@@ -101,7 +101,7 @@ void MainWindow::on_clientJoined(QString nickname)
 {
     qDebug() << "Joined:" << nickname;
 
-    chat->append("<html><i>" + nickname + " joined!</i></html>");
+    chat->append("-> <i>" + nickname + " joined!</i>");
 
     clientsList->addItem(nickname);
 }
@@ -110,7 +110,7 @@ void MainWindow::on_clientLeft(QString nickname)
 {
     qDebug() << "Left:" << nickname;
 
-    chat->append("<html><i>" + nickname + " left!</i></html>");
+    chat->append("-> <i>" + nickname + " left!</i>");
 
     QListWidgetItem* item = clientsList->findItems(nickname, Qt::MatchExactly)[0];
     delete item;
@@ -121,7 +121,7 @@ void MainWindow::on_messageReceived(QString sender, QString message)
     qDebug() << "Sender:" << sender;
     qDebug() << "Message:" << message;
 
-    chat->append("<" + sender + "> " + message);
+    chat->append("&lt;" + sender + "&gt; " + message + "\n");
 }
 
 void MainWindow::on_error()
