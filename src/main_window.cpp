@@ -7,6 +7,7 @@
 #include "connection.h"
 #include "local_client.h"
 #include "server.h"
+#include "version.h"
 
 MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
         : QMainWindow(parent), m_userInfo(std::move(userInfo))
@@ -26,6 +27,8 @@ MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
 
 bool MainWindow::setup()
 {
+    qDebug() << "You are using HadCom v." << VERSION_STRING;
+
     if(m_userInfo.mode == Mode::SERVER)
     {
         qDebug() << "Starting the server...";

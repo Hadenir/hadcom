@@ -6,18 +6,25 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS forms)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bin)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
-
-include_directories("include")
 
 file(GLOB_RECURSE SOURCE "src/*.cpp")
 file(GLOB_RECURSE INCLUDE "include/*.h")
 
 add_executable(hadcom ${SOURCE} ${INCLUDE})
+target_include_directories(hadcom PRIVATE "include")
 target_link_libraries(hadcom Qt5::Widgets Qt5::Network)
 
-install(TARGETS hadcom DESTINATION ${CMAKE_BUILD_TYPE})
-install(DIRECTORY lib/${CMAKE_BUILD_TYPE}/ DESTINATION ${CMAKE_BUILD_TYPE})
+# Semantic versioning
+execute_process(COMMAND git describe --tags OUTPUT_VARIABLE VERSION_STRING)
+string(STRIP ${VERSION_STRING} VERSION_STRING)
+message("Bulding v.${VERSION_STRING}")
+configure_file(include/version.h.in ../include/version.h @ONLY)
+
+# Deployment
+set(INSTALL_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+install(TARGETS hadcom DESTINATION ${INSTALL_PATH})
+execute_process(COMMAND windeployqt --no-quick-import --no-translations --no-system-d3d-compiler hadcom.exe
+        WORKING_DIRECTORY ${INSTALL_PATH})
