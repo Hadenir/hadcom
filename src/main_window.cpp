@@ -121,7 +121,7 @@ void MainWindow::on_messageReceived(QString sender, QString message)
     qDebug() << "Sender:" << sender;
     qDebug() << "Message:" << message;
 
-    chat->append("&lt;" + sender + "&gt; " + message + "\n");
+    chat->append("&lt;" + sender.toHtmlEscaped() + "&gt; " + message.toHtmlEscaped() + "\n");
 }
 
 void MainWindow::on_error()
