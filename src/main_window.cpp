@@ -7,7 +7,6 @@
 #include "connection.h"
 #include "local_client.h"
 #include "server.h"
-#include "version.h"
 
 MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
         : QMainWindow(parent), m_userInfo(std::move(userInfo))
@@ -123,6 +122,8 @@ void MainWindow::on_messageReceived(QString sender, QString message)
 {
     qDebug() << "Sender:" << sender;
     qDebug() << "Message:" << message;
+
+    QApplication::alert(this);
 
     chat->append("&lt;" + sender.toHtmlEscaped() + "&gt; " + message.toHtmlEscaped() + "\n");
 }
