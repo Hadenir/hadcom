@@ -38,7 +38,8 @@ char* ChatMessagePacket::serialize() const
     idx += length;
 
     length = m_message.length() + 1;
-    const char* message = m_message.toStdString().c_str();
+    std::string stdmsg = m_message.toStdString();
+    const char* message = stdmsg.c_str();
     memcpy(&data[idx], message, length);
     idx += length;
 
