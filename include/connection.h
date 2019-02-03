@@ -44,6 +44,8 @@ private:
         CHECKSUM
     } m_receiveState;
 
+    bool m_processing = false;
+
     size_t m_payloadSize = 0;
 
     Packet* m_currentPacket = nullptr;

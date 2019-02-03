@@ -76,6 +76,10 @@ void Connection::on_connected()
 
 void Connection::on_dataReceived()
 {
+    if(m_processing)
+        return;
+
+    m_processing = true;
     while(bytesAvailable() > 0)
     {
         switch(m_receiveState)
@@ -164,6 +168,7 @@ void Connection::on_dataReceived()
                 break;
         }
     }
+    m_processing = false;
 }
 
 void Connection::on_timeout()
