@@ -7,7 +7,7 @@ ClientsListPacket::ClientsListPacket()
         : Packet(4)
 {}
 
-ClientsListPacket::ClientsListPacket(const QList<QString> clientsList)
+ClientsListPacket::ClientsListPacket(const QList<QString>& clientsList)
         : Packet(4), m_clientsList(clientsList)
 {
     for(const auto& nickname : clientsList)
@@ -30,7 +30,7 @@ size_t ClientsListPacket::getSize() const
 
 char* ClientsListPacket::serialize() const
 {
-    char* data = new char[getSize()];
+    auto data = new char[getSize()];
 
     Serializer serializer(data);
     serializer.serializeField(m_clientsList);

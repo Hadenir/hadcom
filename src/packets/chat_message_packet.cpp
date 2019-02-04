@@ -32,7 +32,7 @@ size_t ChatMessagePacket::getSize() const
 
 char* ChatMessagePacket::serialize() const
 {
-    char* data = new char[getSize()];
+    auto data = new char[getSize()];
 
     Serializer serializer(data);
     serializer.serializeField(m_sender);

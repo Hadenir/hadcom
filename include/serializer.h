@@ -8,7 +8,7 @@
 class Serializer
 {
 public:
-    Serializer(char* data);
+    explicit Serializer(char* data);
 
     void serializeField(char field);
     void serializeField(signed char field);

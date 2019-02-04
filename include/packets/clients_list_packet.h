@@ -9,7 +9,7 @@ class ClientsListPacket : public Packet
 public:
     ClientsListPacket();
 
-    explicit ClientsListPacket(const QList<QString> clientsList);
+    explicit ClientsListPacket(const QList<QString>& clientsList);
 
     QList<QString> getClients() const;
 

@@ -8,7 +8,7 @@
 class Deserializer
 {
 public:
-    Deserializer(const char* data);
+    explicit Deserializer(const char* data);
 
     void deserializeField(char& field);
     void deserializeField(signed char& field);

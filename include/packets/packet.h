@@ -5,9 +5,9 @@
 class Packet
 {
 public:
-    Packet(unsigned char packetId = 0);
+    explicit Packet(unsigned char packetId = 0);
 
-    virtual ~Packet(){}
+    virtual ~Packet() = default;
 
     virtual size_t getSize() const = 0;
 

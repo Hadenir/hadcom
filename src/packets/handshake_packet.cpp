@@ -34,7 +34,7 @@ size_t HandshakePacket::getSize() const
 
 char* HandshakePacket::serialize() const
 {
-    char* data = new char[getSize()];
+    auto data = new char[getSize()];
 
     Serializer serializer(data);
     serializer.serializeField(m_magic);

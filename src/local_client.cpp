@@ -33,7 +33,7 @@ void LocalClient::on_packetReceived(Packet* packet)
     {
         case 2:
         {
-            ClientJoinedPacket* clientJoinedPacket = (ClientJoinedPacket*) packet;
+            auto* clientJoinedPacket = (ClientJoinedPacket*) packet;
             emit clientJoined(clientJoinedPacket->getNickname());
 
             delete packet;
@@ -41,7 +41,7 @@ void LocalClient::on_packetReceived(Packet* packet)
         }
         case 3:
         {
-            ClientLeftPacket* clientLeftPacket = (ClientLeftPacket*) packet;
+            auto clientLeftPacket = (ClientLeftPacket*) packet;
             emit clientLeft(clientLeftPacket->getNickname());
 
             delete packet;
@@ -49,7 +49,7 @@ void LocalClient::on_packetReceived(Packet* packet)
         }
         case 4:
         {
-            ClientsListPacket* clientsListPacket = (ClientsListPacket*) packet;
+            auto clientsListPacket = (ClientsListPacket*) packet;
             emit loggedIn(clientsListPacket->getClients());
 
             delete packet;
@@ -57,7 +57,7 @@ void LocalClient::on_packetReceived(Packet* packet)
         }
         case 5:
         {
-            ChatMessagePacket* chatMessagePacket = (ChatMessagePacket*) packet;
+            auto chatMessagePacket = (ChatMessagePacket*) packet;
             emit messageReceived(chatMessagePacket->getSender(), chatMessagePacket->getMessage());
 
             delete packet;

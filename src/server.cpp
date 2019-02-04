@@ -38,16 +38,16 @@ QList<QString> Server::getClientsList() const
 
 void Server::incomingConnection(qintptr descriptor)
 {
-    Connection* connection = new Connection(descriptor, this);
+    auto connection = new Connection(descriptor, this);
     connect(connection, SIGNAL(packetReceived(Packet * )), this, SLOT(on_packetReceived(Packet * )));
     connect(connection, SIGNAL(disconnected()), this, SLOT(on_connectionLost()));
-    RemoteClient* client = new RemoteClient(this);
+    auto client = new RemoteClient(this);
     m_clients.insert(connection, client);
 }
 
 void Server::on_packetReceived(Packet* packet)
 {
-    Connection* connection = (Connection*) sender();
+    auto connection = (Connection*) sender();
     RemoteClient* client = m_clients[connection];
 
     int packetId = packet->getId();
@@ -55,7 +55,7 @@ void Server::on_packetReceived(Packet* packet)
     {
         case 1:
         {
-            HandshakePacket* handshakePacket = (HandshakePacket*) packet;
+            auto handshakePacket = (HandshakePacket*) packet;
 
             int magic = handshakePacket->getMagic();
             if(magic != MAGIC)
@@ -74,7 +74,7 @@ void Server::on_packetReceived(Packet* packet)
         }
         case 5:
         {
-            ChatMessagePacket* chatMessagePacket = (ChatMessagePacket*) packet;
+            auto chatMessagePacket = (ChatMessagePacket*) packet;
 
             broadcast(*chatMessagePacket);
 
@@ -88,7 +88,7 @@ void Server::on_packetReceived(Packet* packet)
 
 void Server::on_connectionLost()
 {
-    Connection* connection = (Connection*) sender();
+    auto* connection = (Connection*) sender();
     RemoteClient* client = m_clients[connection];
 
     QString nickname = client->getNickname();

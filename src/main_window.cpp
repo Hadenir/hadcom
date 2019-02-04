@@ -16,7 +16,7 @@ MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
 
     m_progressDialog = new QProgressDialog("Connecting to the server...", "Cancel", 0, 0, this,
                                            Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
-    QProgressBar* progressBar = new QProgressBar(m_progressDialog);
+    auto progressBar = new QProgressBar(m_progressDialog);
     progressBar->setTextVisible(false);
     progressBar->setRange(0, 0);
     progressBar->setValue(0);
@@ -45,7 +45,7 @@ bool MainWindow::setup()
 
     qDebug() << "Connecting to the server...";
 
-    Connection* connection = new Connection(this);
+    auto connection = new Connection(this);
     connect(connection, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(on_error()));
 
     qDebug() << "Created connection!";
@@ -127,7 +127,7 @@ void MainWindow::on_messageReceived(QString sender, QString message)
 void MainWindow::on_error()
 {
     qDebug() << "Server error!";
-    QTcpSocket* socket = (QTcpSocket*) sender();
+    auto socket = (QTcpSocket*) sender();
     QMessageBox::critical(this, "An error occured", "Error: " + socket->errorString() + "!");
     this->close();
 }

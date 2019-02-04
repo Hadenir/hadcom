@@ -26,7 +26,7 @@ size_t ClientJoinedPacket::getSize() const
 
 char* ClientJoinedPacket::serialize() const
 {
-    char* data = new char[getSize()];
+    auto data = new char[getSize()];
 
     Serializer serializer(data);
     serializer.serializeField(m_nickname);
