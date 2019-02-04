@@ -7,6 +7,7 @@
 #include "connection.h"
 #include "local_client.h"
 #include "server.h"
+#include "version.h"
 
 MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
         : QMainWindow(parent), m_userInfo(std::move(userInfo))
@@ -33,9 +34,6 @@ bool MainWindow::setup()
         qDebug() << "Starting the server...";
 
         m_server = new Server(this);
-        // connect(m_server, SIGNAL(messageReceived(QString)), this, SLOT(on_messageReceived(QString)));
-        // connect(m_server, SIGNAL(clientJoined(LocalClient*)), this, SLOT(on_clientJoined(LocalClient*)));
-        // connect(m_server, SIGNAL(clientLeft(LocalClient*)), this, SLOT(on_clientLeft(LocalClient*)));
         if(!m_server->bind(m_userInfo.port))
         {
             QMessageBox::critical(this, "Server error occured", "Error: Couldn't bind to the port!");
@@ -59,8 +57,6 @@ bool MainWindow::setup()
     connect(m_localClient, SIGNAL(clientLeft(QString)), this, SLOT(on_clientLeft(QString)));
     connect(m_localClient, SIGNAL(messageReceived(QString, QString)), this, SLOT(on_messageReceived(QString, QString)));
     m_localClient->setNickname(m_userInfo.nickname);
-
-    qDebug() << "Created local client!";
 
     connection->connectToHost(m_userInfo.address, m_userInfo.port);
 

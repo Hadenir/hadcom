@@ -1,5 +1,8 @@
 #include "packets/clients_list_packet.h"
 
+#include "serializer.h"
+#include "deserializer.h"
+
 ClientsListPacket::ClientsListPacket()
         : Packet(4)
 {}
@@ -28,44 +31,16 @@ size_t ClientsListPacket::getSize() const
 char* ClientsListPacket::serialize() const
 {
     char* data = new char[getSize()];
-    unsigned int idx = 0;
 
-    // int size = m_clientsList.size();
-    // memcpy(&data[idx], &size, sizeof(size));
-    // idx += sizeof(size);
-
-    memcpy(&data[idx], &m_nicknamesLength, sizeof(m_nicknamesLength));
-    idx += sizeof(m_nicknamesLength);
-
-    for(const auto& client : m_clientsList)
-    {
-        int length = client.length() + 1;
-        const char* nickname = client.toStdString().c_str();
-        memcpy(&data[idx], nickname, length);
-        idx += length;
-    }
+    Serializer serializer(data);
+    serializer.serializeField(m_clientsList);
 
     return data;
 }
 
-bool ClientsListPacket::deserialize(const char* data)
+void ClientsListPacket::deserialize(const char* data)
 {
-    unsigned int idx = 0;
 
-    int size;
-    memcpy(&size, &data[idx], sizeof(size));
-    idx += sizeof(size);
-
-    char buff[size];
-    memcpy(buff, &data[idx], size);
-
-    int i = 0;
-    while(i < size)
-    {
-        QString nickname(&buff[i]);
-        m_clientsList.push_back(nickname);
-        i += nickname.length() + 1;
-    }
-
-    return true;
+    Deserializer deserializer(data);
+    deserializer.deserializeField(m_clientsList);
 }

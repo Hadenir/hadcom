@@ -19,7 +19,7 @@ public:
 
     char* serialize() const override;
 
-    bool deserialize(const char* data) override;
+    void deserialize(const char* data) override;
 
 private:
     int m_magic = 0;

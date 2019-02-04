@@ -13,7 +13,7 @@ public:
 
     virtual char* serialize() const = 0;
 
-    virtual bool deserialize(const char* data) = 0;
+    virtual void deserialize(const char* data) = 0;
 
     unsigned char getId() const;
 

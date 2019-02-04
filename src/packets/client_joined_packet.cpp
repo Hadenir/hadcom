@@ -1,5 +1,8 @@
 #include "packets/client_joined_packet.h"
 
+#include "serializer.h"
+#include "deserializer.h"
+
 ClientJoinedPacket::ClientJoinedPacket()
         : Packet(2)
 {}
@@ -16,7 +19,6 @@ QString ClientJoinedPacket::getNickname() const
 size_t ClientJoinedPacket::getSize() const
 {
     size_t sz = 0;
-    sz += sizeof(m_nickname.length());
     sz += m_nickname.length() + 1;
 
     return sz;
@@ -25,29 +27,15 @@ size_t ClientJoinedPacket::getSize() const
 char* ClientJoinedPacket::serialize() const
 {
     char* data = new char[getSize()];
-    unsigned int idx = 0;
 
-    int length = m_nickname.length() + 1;
-    memcpy(&data[idx], &length, sizeof(length));
-    idx += sizeof(length);
-
-    const char* nickname = m_nickname.toStdString().c_str();
-    memcpy(&data[idx], nickname, length);
+    Serializer serializer(data);
+    serializer.serializeField(m_nickname);
 
     return data;
 }
 
-bool ClientJoinedPacket::deserialize(const char* data)
+void ClientJoinedPacket::deserialize(const char* data)
 {
-    unsigned int idx = 0;
-
-    int length;
-    memcpy(&length, &data[idx], sizeof(length));
-    idx += sizeof(length);
-
-    char nickname[length];
-    memcpy(nickname, &data[idx], length);
-    m_nickname = QString(nickname);
-
-    return true;
+    Deserializer deserializer(data);
+    deserializer.deserializeField(m_nickname);
 }

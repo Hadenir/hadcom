@@ -1,5 +1,8 @@
 #include "packets/chat_message_packet.h"
 
+#include "serializer.h"
+#include "deserializer.h"
+
 ChatMessagePacket::ChatMessagePacket()
         : Packet(5)
 {}
@@ -30,33 +33,16 @@ size_t ChatMessagePacket::getSize() const
 char* ChatMessagePacket::serialize() const
 {
     char* data = new char[getSize()];
-    unsigned int idx = 0;
 
-    int length = m_sender.length() + 1;
-    const char* sender = m_sender.toStdString().c_str();
-    memcpy(&data[idx], sender, length);
-    idx += length;
-
-    length = m_message.length() + 1;
-    std::string stdmsg = m_message.toStdString();
-    const char* message = stdmsg.c_str();
-    memcpy(&data[idx], message, length);
-    idx += length;
+    Serializer serializer(data);
+    serializer.serializeField(m_sender);
+    serializer.serializeField(m_message);
 
     return data;
 }
 
-bool ChatMessagePacket::deserialize(const char* data)
+void ChatMessagePacket::deserialize(const char* data)
 {
-    unsigned int idx = 0;
-
-    QString sender(&data[idx]);
-    m_sender = sender;
-    idx += sender.length() + 1;
-
-    QString message(&data[idx]);
-    m_message = message;
-    idx += message.length() + 1;
-
-    return true;
+    Deserializer deserializer(data);
+    deserializer.deserializeField(m_sender);
 }
