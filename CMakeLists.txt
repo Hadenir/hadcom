@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(hadcom)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -20,7 +20,7 @@ target_link_libraries(hadcom Qt5::Widgets Qt5::Network)
 # Semantic versioning
 execute_process(COMMAND git describe --tags OUTPUT_VARIABLE VERSION_STRING)
 string(STRIP ${VERSION_STRING} VERSION_STRING)
-message("Bulding v.${VERSION_STRING}")
+message("Deploying v.${VERSION_STRING}")
 configure_file(include/version.h.in ../include/version.h @ONLY)
 
 # Deployment
