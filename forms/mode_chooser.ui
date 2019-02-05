@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>153</height>
+    <height>145</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>400</width>
-    <height>153</height>
+    <height>145</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>153</height>
+    <width>16777215</width>
+    <height>145</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -54,53 +54,45 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="addressLayout">
-     <item>
-      <layout class="QVBoxLayout" name="leftLayout">
-       <item>
-        <widget class="QLabel" name="addressLabel">
-         <property name="text">
-          <string>Address:</string>
-         </property>
-         <property name="buddy">
-          <cstring>addressInput</cstring>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="addressInput"/>
-       </item>
-      </layout>
+    <layout class="QGridLayout" name="addressLayut">
+     <item row="0" column="1">
+      <widget class="QLabel" name="portLabel">
+       <property name="text">
+        <string>Port:</string>
+       </property>
+       <property name="buddy">
+        <cstring>portInput</cstring>
+       </property>
+      </widget>
      </item>
-     <item>
-      <layout class="QVBoxLayout" name="rightLayout">
-       <item>
-        <widget class="QLabel" name="portLabel">
-         <property name="text">
-          <string>Port:</string>
-         </property>
-         <property name="buddy">
-          <cstring>portInput</cstring>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="portInput">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>50</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="0" column="0">
+      <widget class="QLabel" name="addressLabel">
+       <property name="text">
+        <string>Address:</string>
+       </property>
+       <property name="buddy">
+        <cstring>addressInput</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="addressInput"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="portInput">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -110,6 +102,19 @@
       <string>Create server</string>
      </property>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QPushButton" name="continueButton">
@@ -156,8 +161,8 @@
      <y>92</y>
     </hint>
     <hint type="destinationlabel">
-     <x>50</x>
-     <y>54</y>
+     <x>60</x>
+     <y>50</y>
     </hint>
    </hints>
   </connection>
