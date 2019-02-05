@@ -45,4 +45,5 @@ void ChatMessagePacket::deserialize(const char* data)
 {
     Deserializer deserializer(data);
     deserializer.deserializeField(m_sender);
+    deserializer.deserializeField(m_message);
 }
