@@ -1,6 +1,7 @@
 #include "mode_chooser.h"
 
 #include <QMessageBox>
+#include <QIntValidator>
 
 ModeChooser::ModeChooser(QWidget* parent)
         : QDialog(parent)

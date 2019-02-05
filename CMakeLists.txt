@@ -7,8 +7,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS forms)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
+find_package(Qt5Widgets 5.12 REQUIRED)
+find_package(Qt5Network 5.12 REQUIRED)
 
 file(GLOB_RECURSE SOURCE "src/*.cpp")
 file(GLOB_RECURSE INCLUDE "include/*.h")
