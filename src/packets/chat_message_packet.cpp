@@ -24,8 +24,10 @@ QString ChatMessagePacket::getMessage() const
 size_t ChatMessagePacket::getSize() const
 {
     size_t sz = 0;
-    sz += m_sender.length() + 1;
-    sz += m_message.length() + 1;
+    sz += sizeof(int);
+    sz += m_sender.toUtf8().length();
+    sz += sizeof(int);
+    sz += m_message.toUtf8().length();
 
     return sz;
 }

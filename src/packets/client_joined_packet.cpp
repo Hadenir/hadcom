@@ -19,7 +19,8 @@ QString ClientJoinedPacket::getNickname() const
 size_t ClientJoinedPacket::getSize() const
 {
     size_t sz = 0;
-    sz += m_nickname.length() + 1;
+    sz += sizeof(int);
+    sz += m_nickname.toUtf8().length();
 
     return sz;
 }

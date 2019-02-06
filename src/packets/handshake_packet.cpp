@@ -27,7 +27,8 @@ size_t HandshakePacket::getSize() const
 {
     size_t sz = 0;
     sz += sizeof(m_magic);
-    sz += m_nickname.length() + 1;
+    sz += sizeof(int);
+    sz += m_nickname.toUtf8().length();
 
     return sz;
 }

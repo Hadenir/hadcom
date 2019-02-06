@@ -22,9 +22,9 @@ public:
     void serializeField(long long field);
     void serializeField(unsigned long long field);
     void serializeField(const std::string& field);
+    void serializeField(const QByteArray& field);
     void serializeField(const QString& field);
     void serializeField(const QList<QString>& field);
-
 
 private:
     char* m_data;

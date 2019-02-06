@@ -22,6 +22,7 @@ public:
     void deserializeField(long long& field);
     void deserializeField(unsigned long long& field);
     void deserializeField(std::string& field);
+    void deserializeField(QByteArray& field);
     void deserializeField(QString& field);
     void deserializeField(QList<QString>& field);
 

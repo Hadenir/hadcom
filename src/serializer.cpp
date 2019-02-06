@@ -89,10 +89,17 @@ void Serializer::serializeField(const std::string& field)
     m_idx += length;
 }
 
+void Serializer::serializeField(const QByteArray& field)
+{
+    serializeField(field.size());
+    for(auto byte : field)
+        serializeField(byte);
+}
+
 void Serializer::serializeField(const QString& field)
 {
-    std::string stdstr = field.toStdString();
-    serializeField(stdstr);
+    QByteArray utf8 = field.toUtf8();
+    serializeField(utf8);
 }
 
 void Serializer::serializeField(const QList<QString>& field)

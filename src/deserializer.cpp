@@ -88,11 +88,31 @@ void Deserializer::deserializeField(std::string& field)
     m_idx += string.length() + 1;
 }
 
+void Deserializer::deserializeField(QByteArray& field)
+{
+    int size;
+    deserializeField(size);
+
+    QByteArray byteArray;
+    byteArray.reserve(size);
+
+    char byte;
+    for(int i = 0; i < size; ++i)
+    {
+        deserializeField(byte);
+        byteArray.push_back(byte);
+    }
+
+    field = byteArray;
+}
+#include <QDebug>
 void Deserializer::deserializeField(QString& field)
 {
-    QString string(&m_data[m_idx]);
+    QByteArray bytes;
+    deserializeField(bytes);
+
+    QString string = QString::fromUtf8(bytes);
     field = string;
-    m_idx += string.length() + 1;
 }
 
 void Deserializer::deserializeField(QList<QString>& field)
@@ -104,14 +124,11 @@ void Deserializer::deserializeField(QList<QString>& field)
     list.reserve(size);
 
     QString string;
-    size_t length = 0;
     for(int i = 0; i < size; ++i)
     {
         deserializeField(string);
         list.push_back(string);
-        length += string.length() + 1;
     }
 
     field = list;
-    m_idx += length;
 }
