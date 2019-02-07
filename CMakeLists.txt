@@ -24,7 +24,13 @@ message("Deploying v.${VERSION_STRING}")
 configure_file(include/version.h.in ../include/version.h @ONLY)
 
 # Deployment
+add_custom_target(Deploy)
 set(INSTALL_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
-install(TARGETS hadcom DESTINATION ${INSTALL_PATH})
-execute_process(COMMAND windeployqt --no-quick-import --no-translations --no-system-d3d-compiler hadcom.exe
-        WORKING_DIRECTORY ${INSTALL_PATH})
+set(DEPLOY_PATH ${CMAKE_SOURCE_DIR}/deploy/${CMAKE_BUILD_TYPE})
+find_program(WINDEPLOYQT windeployqt)
+add_custom_command(TARGET Deploy POST_BUILD COMMAND copy hadcom.exe \"${INSTALL_PATH}\" WORKING_DIRECTORY
+        ${CMAKE_BINARY_DIR})
+add_custom_command(TARGET Deploy POST_BUILD COMMAND ${WINDEPLOYQT} --no-quick-import --no-translations
+        --no-system-d3d-compiler hadcom.exe WORKING_DIRECTORY ${INSTALL_PATH})
+add_custom_command(TARGET Deploy POST_BUILD COMMAND cmake -E tar cf \"${DEPLOY_PATH}/HadCom-${VERSION_STRING}.zip\"
+        --format=zip ${CMAKE_BUILD_TYPE} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
