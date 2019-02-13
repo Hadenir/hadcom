@@ -40,8 +40,7 @@ private:
         HEADER,
         ID,
         SIZE,
-        PAYLOAD,
-        CHECKSUM
+        PAYLOAD
     } m_receiveState;
 
     bool m_processing = false;
@@ -49,8 +48,6 @@ private:
     size_t m_payloadSize = 0;
 
     Packet* m_currentPacket = nullptr;
-
-    char m_currentChecksum = 0;
 
     QTimer* m_timeoutTimer;
 };

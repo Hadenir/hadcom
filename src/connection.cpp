@@ -43,27 +43,14 @@ bool Connection::send(const Packet& packet)
 
     write(&HEADER_VAL, sizeof(HEADER_VAL));
 
-    char checksum = 0;
-
     int packetId = packet.getId();
     write((char*) &packetId, sizeof(packetId));
-
-    for(int i = 0; i < sizeof(packetId); ++i)
-        checksum ^= ((char*)&packetId)[i];
 
     size_t size = packet.getSize();
     write((char*) &size, sizeof(size));
 
-    for(int i = 0; i < sizeof(size); ++i)
-        checksum ^= ((char*)&size)[i];
-
     char* data = packet.serialize();
     write(data, packet.getSize());
-
-    for(int i = 0; i < size; ++i)
-        checksum ^= data[i];
-
-    write(&checksum, 1);
 
     delete[] data;
     return true;
@@ -107,9 +94,6 @@ void Connection::on_dataReceived()
 
                 m_currentPacket = PacketFactory::Create(packetId);
 
-                m_currentChecksum = 0;
-                for(int i = 0; i < sizeof(packetId); ++i)
-                    m_currentChecksum ^= ((char*)&packetId)[i];
 
                 m_receiveState = ReceiveState::SIZE;
 
@@ -121,9 +105,6 @@ void Connection::on_dataReceived()
                     return;
 
                 read((char*) &m_payloadSize, sizeof(m_payloadSize));
-
-                for(int i = 0; i < sizeof(m_payloadSize); ++i)
-                    m_currentChecksum ^= ((char*)&m_payloadSize)[i];
 
                 m_receiveState = ReceiveState::PAYLOAD;
 
@@ -138,28 +119,8 @@ void Connection::on_dataReceived()
                 read(data, m_payloadSize);
 
                 m_currentPacket->deserialize(data);
+                emit packetReceived(m_currentPacket);
 
-                for(int i = 0; i < m_payloadSize; ++i)
-                    m_currentChecksum ^= data[i];
-
-                m_receiveState = ReceiveState::CHECKSUM;
-
-                break;
-            }
-            case CHECKSUM:
-            {
-                if(bytesAvailable() < sizeof(m_currentChecksum))
-                    return;
-
-                char checksum;
-                read(&checksum, 1);
-
-                if(checksum == m_currentChecksum)
-                    emit packetReceived(m_currentPacket);
-
-                m_currentPacket = nullptr;
-                m_currentChecksum = 0;
-                m_payloadSize = 0;
                 m_receiveState = ReceiveState::HEADER;
 
                 break;
