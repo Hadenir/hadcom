@@ -97,8 +97,6 @@ void MainWindow::on_sendButton_clicked()
 
 void MainWindow::on_clientJoined(QString nickname)
 {
-    qDebug() << "Joined:" << nickname;
-
     chat->append("-> <i>" + nickname + " joined!</i>");
 
     clientsList->addItem(nickname);
@@ -106,8 +104,6 @@ void MainWindow::on_clientJoined(QString nickname)
 
 void MainWindow::on_clientLeft(QString nickname)
 {
-    qDebug() << "Left:" << nickname;
-
     chat->append("-> <i>" + nickname + " left!</i>");
 
     QListWidgetItem* item = clientsList->findItems(nickname, Qt::MatchExactly)[0];
@@ -116,9 +112,6 @@ void MainWindow::on_clientLeft(QString nickname)
 
 void MainWindow::on_messageReceived(QString sender, QString message)
 {
-    qDebug() << "Sender:" << sender;
-    qDebug() << "Message:" << message;
-
     QApplication::alert(this);
 
     chat->append("&lt;" + sender.toHtmlEscaped() + "&gt; " + message.toHtmlEscaped() + "\n");
