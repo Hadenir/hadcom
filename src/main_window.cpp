@@ -73,7 +73,7 @@ void MainWindow::on_connected()
 
 void MainWindow::on_loggedIn(const QList<QString>& nicknames)
 {
-    accountLabel->setText("Logged");
+    accountLabel->setText("Logged as " + m_localClient->getNickname());
 
     for(const auto& nickname : nicknames)
     {
