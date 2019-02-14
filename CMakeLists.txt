@@ -10,6 +10,8 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS forms)
 find_package(Qt5Widgets 5.12 REQUIRED)
 find_package(Qt5Network 5.12 REQUIRED)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+
 file(GLOB_RECURSE SOURCE "src/*.cpp")
 file(GLOB_RECURSE INCLUDE "include/*.h")
 
