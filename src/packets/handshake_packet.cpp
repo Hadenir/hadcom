@@ -1,7 +1,5 @@
 #include "packets/handshake_packet.h"
 
-#include <QDebug>
-
 #include "serializer.h"
 #include "deserializer.h"
 

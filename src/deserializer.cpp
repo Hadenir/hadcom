@@ -84,7 +84,7 @@ void Deserializer::deserializeField(QByteArray& field)
 
     field = byteArray;
 }
-#include <QDebug>
+
 void Deserializer::deserializeField(QString& field)
 {
     QByteArray bytes;
