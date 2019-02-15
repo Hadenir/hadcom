@@ -5,7 +5,7 @@
 #include "packets/clients_list_packet.h"
 #include "packets/chat_message_packet.h"
 
-Packet* PacketFactory::Create(int packetId)
+Packet* PacketFactory::Create(uint8_t packetId)
 {
     switch(packetId)
     {

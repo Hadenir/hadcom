@@ -9,10 +9,7 @@ ClientsListPacket::ClientsListPacket()
 
 ClientsListPacket::ClientsListPacket(const QList<QString>& clientsList)
         : Packet(4), m_clientsList(clientsList)
-{
-    for(const auto& nickname : clientsList)
-        m_nicknamesLength += sizeof(int) + nickname.toUtf8().length();
-}
+{}
 
 QList<QString> ClientsListPacket::getClients() const
 {
@@ -23,7 +20,8 @@ size_t ClientsListPacket::getSize() const
 {
     size_t sz = 0;
     sz += sizeof(int);
-    sz += m_nicknamesLength;
+    for(const auto& nickname : m_clientsList)
+        sz += sizeof(int) + nickname.toUtf8().length();
 
     return sz;
 }

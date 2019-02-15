@@ -6,7 +6,7 @@
 class Packet
 {
 public:
-    explicit Packet(unsigned char packetId = 0);
+    explicit Packet(uint8_t packetId = 0);
 
     virtual ~Packet() = default;
 
@@ -16,8 +16,8 @@ public:
 
     virtual void deserialize(const char* data) = 0;
 
-    unsigned char getId() const;
+    uint8_t getId() const;
 
 private:
-    unsigned char m_packetId;
+    uint8_t m_packetId;
 };

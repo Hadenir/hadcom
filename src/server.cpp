@@ -50,7 +50,7 @@ void Server::on_packetReceived(Packet* packet)
     auto connection = (Connection*) sender();
     RemoteClient* client = m_clients[connection];
 
-    int packetId = packet->getId();
+    uint8_t packetId = packet->getId();
     switch(packetId)
     {
         case 1:

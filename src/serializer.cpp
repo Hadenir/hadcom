@@ -4,79 +4,58 @@ Serializer::Serializer(char* data)
         : m_data(data)
 {}
 
-void Serializer::serializeField(char field)
+void Serializer::serializeField(int8_t field)
 {
-    size_t length = sizeof(char);
+    size_t length = sizeof(int8_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(signed char field)
+void Serializer::serializeField(uint8_t field)
 {
-    size_t length = sizeof(signed char);
+    size_t length = sizeof(uint8_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(unsigned char field)
+void Serializer::serializeField(int16_t field)
 {
-    size_t length = sizeof(unsigned char);
+    size_t length = sizeof(int16_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(short field)
+void Serializer::serializeField(uint16_t field)
 {
-    size_t length = sizeof(short);
+    size_t length = sizeof(uint16_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(unsigned short field)
+void Serializer::serializeField(int32_t field)
 {
-    size_t length = sizeof(unsigned short);
+    size_t length = sizeof(int32_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(int field)
+void Serializer::serializeField(uint32_t field)
 {
-    size_t length = sizeof(int);
+    size_t length = sizeof(uint32_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(unsigned int field)
+void Serializer::serializeField(int64_t field)
 {
-    size_t length = sizeof(unsigned int);
+    size_t length = sizeof(int64_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
 
-void Serializer::serializeField(long field)
+void Serializer::serializeField(uint64_t field)
 {
-    size_t length = sizeof(long);
-    memcpy(&m_data[m_idx], &field, length);
-    m_idx += length;
-}
-
-void Serializer::serializeField(unsigned long field)
-{
-    size_t length = sizeof(unsigned long);
-    memcpy(&m_data[m_idx], &field, length);
-    m_idx += length;
-}
-
-void Serializer::serializeField(long long field)
-{
-    size_t length = sizeof(long long);
-    memcpy(&m_data[m_idx], &field, length);
-    m_idx += length;
-}
-
-void Serializer::serializeField(unsigned long long field)
-{
-    size_t length = sizeof(unsigned long long);
+    size_t length = sizeof(uint64_t);
     memcpy(&m_data[m_idx], &field, length);
     m_idx += length;
 }
@@ -93,7 +72,7 @@ void Serializer::serializeField(const QByteArray& field)
 {
     serializeField(field.size());
     for(auto byte : field)
-        serializeField(byte);
+        serializeField((uint8_t)byte);
 }
 
 void Serializer::serializeField(const QString& field)

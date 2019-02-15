@@ -43,14 +43,14 @@ bool Connection::send(const Packet& packet)
 
     write(&HEADER_VAL, sizeof(HEADER_VAL));
 
-    int packetId = packet.getId();
+    uint8_t packetId = packet.getId();
     write((char*) &packetId, sizeof(packetId));
 
     size_t size = packet.getSize();
     write((char*) &size, sizeof(size));
 
     char* data = packet.serialize();
-    write(data, packet.getSize());
+    write(data, size);
 
     delete[] data;
     return true;
@@ -89,7 +89,7 @@ void Connection::on_dataReceived()
                 if(bytesAvailable() < sizeof(int))
                     return;
 
-                int packetId;
+                uint8_t packetId;
                 read((char*) &packetId, sizeof(packetId));
 
                 m_currentPacket = PacketFactory::Create(packetId);

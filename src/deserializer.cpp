@@ -4,79 +4,58 @@ Deserializer::Deserializer(const char* data)
         : m_data(data)
 {}
 
-void Deserializer::deserializeField(char& field)
+void Deserializer::deserializeField(int8_t& field)
 {
-    size_t length = sizeof(char);
+    size_t length = sizeof(int8_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(signed char& field)
+void Deserializer::deserializeField(uint8_t& field)
 {
-    size_t length = sizeof(signed char);
+    size_t length = sizeof(uint8_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(unsigned char& field)
+void Deserializer::deserializeField(int16_t& field)
 {
-    size_t length = sizeof(unsigned char);
+    size_t length = sizeof(int16_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(short& field)
+void Deserializer::deserializeField(uint16_t& field)
 {
-    size_t length = sizeof(short);
+    size_t length = sizeof(uint16_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(unsigned short& field)
+void Deserializer::deserializeField(int32_t& field)
 {
-    size_t length = sizeof(unsigned short);
+    size_t length = sizeof(int32_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(int& field)
+void Deserializer::deserializeField(uint32_t& field)
 {
-    size_t length = sizeof(int);
+    size_t length = sizeof(uint32_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(unsigned int& field)
+void Deserializer::deserializeField(int64_t& field)
 {
-    size_t length = sizeof(unsigned int);
+    size_t length = sizeof(int64_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
 
-void Deserializer::deserializeField(long& field)
+void Deserializer::deserializeField(uint64_t& field)
 {
-    size_t length = sizeof(long);
-    memcpy(&field, &m_data[m_idx], length);
-    m_idx += length;
-}
-
-void Deserializer::deserializeField(unsigned long& field)
-{
-    size_t length = sizeof(unsigned long);
-    memcpy(&field, &m_data[m_idx], length);
-    m_idx += length;
-}
-
-void Deserializer::deserializeField(long long& field)
-{
-    size_t length = sizeof(long long);
-    memcpy(&field, &m_data[m_idx], length);
-    m_idx += length;
-}
-
-void Deserializer::deserializeField(unsigned long long& field)
-{
-    size_t length = sizeof(unsigned long long);
+    size_t length = sizeof(uint64_t);
     memcpy(&field, &m_data[m_idx], length);
     m_idx += length;
 }
@@ -96,7 +75,7 @@ void Deserializer::deserializeField(QByteArray& field)
     QByteArray byteArray;
     byteArray.reserve(size);
 
-    char byte;
+    uint8_t byte;
     for(int i = 0; i < size; ++i)
     {
         deserializeField(byte);

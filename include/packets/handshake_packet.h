@@ -9,9 +9,9 @@ class HandshakePacket : public Packet
 public:
     HandshakePacket();
 
-    explicit HandshakePacket(int magic, const QString& nickname);
+    explicit HandshakePacket(uint32_t magic, const QString& nickname);
 
-    int getMagic() const;
+    uint32_t getMagic() const;
 
     QString getNickname() const;
 
@@ -22,7 +22,7 @@ public:
     void deserialize(const char* data) override;
 
 private:
-    int m_magic = 0;
+    uint32_t m_magic = 0;
 
     QString m_nickname;
 };

@@ -1,10 +1,10 @@
 #include "packets/packet.h"
 
-Packet::Packet(unsigned char packetId)
+Packet::Packet(uint8_t packetId)
         : m_packetId(packetId)
 {}
 
-unsigned char Packet::getId() const
+uint8_t Packet::getId() const
 {
     return m_packetId;
 }

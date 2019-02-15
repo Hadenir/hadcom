@@ -9,11 +9,11 @@ HandshakePacket::HandshakePacket()
         : Packet(1)
 {}
 
-HandshakePacket::HandshakePacket(int magic, const QString& nickname)
+HandshakePacket::HandshakePacket(uint32_t magic, const QString& nickname)
         : Packet(1), m_magic(magic), m_nickname(nickname)
 {}
 
-int HandshakePacket::getMagic() const
+uint32_t HandshakePacket::getMagic() const
 {
     return m_magic;
 }

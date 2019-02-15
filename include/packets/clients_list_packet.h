@@ -21,6 +21,4 @@ public:
 
 private:
     QList<QString> m_clientsList;
-
-    unsigned int m_nicknamesLength = 0;
 };

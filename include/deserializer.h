@@ -10,17 +10,14 @@ class Deserializer
 public:
     explicit Deserializer(const char* data);
 
-    void deserializeField(char& field);
-    void deserializeField(signed char& field);
-    void deserializeField(unsigned char& field);
-    void deserializeField(short& field);
-    void deserializeField(unsigned short& field);
-    void deserializeField(int& field);
-    void deserializeField(unsigned int& field);
-    void deserializeField(long& field);
-    void deserializeField(unsigned long& field);
-    void deserializeField(long long& field);
-    void deserializeField(unsigned long long& field);
+    void deserializeField(int8_t& field);
+    void deserializeField(uint8_t& field);
+    void deserializeField(int16_t& field);
+    void deserializeField(uint16_t& field);
+    void deserializeField(int32_t& field);
+    void deserializeField(uint32_t& field);
+    void deserializeField(int64_t& field);
+    void deserializeField(uint64_t& field);
     void deserializeField(std::string& field);
     void deserializeField(QByteArray& field);
     void deserializeField(QString& field);

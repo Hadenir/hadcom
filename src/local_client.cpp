@@ -27,7 +27,7 @@ void LocalClient::on_connected()
 
 void LocalClient::on_packetReceived(Packet* packet)
 {
-    int packetId = packet->getId();
+    uint8_t packetId = packet->getId();
     qDebug() << "Received packet of id" << packetId;
     switch(packetId)
     {
