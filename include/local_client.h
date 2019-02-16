@@ -31,7 +31,7 @@ private slots:
     void on_packetReceived(Packet* packet);
 
 private:
-    const int MAGIC = 0x12052000;
+    const uint32_t MAGIC = 0x12052000;
 
     Connection* m_connection;
 };
