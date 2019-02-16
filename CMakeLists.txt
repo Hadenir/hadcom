@@ -12,6 +12,10 @@ find_package(Qt5Network 5.12 REQUIRED)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
 
+if(${CMAKE_BUILD_TYPE} EQUAL Release)
+    add_compile_definitions(QT_NO_DEBUG_OUTPUT)
+endif()
+
 file(GLOB_RECURSE SOURCE "src/*.cpp")
 file(GLOB_RECURSE INCLUDE "include/*.h")
 
