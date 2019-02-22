@@ -13,7 +13,6 @@ public:
     UserInfo getUserInfo() const;
 
 private slots:
-
     void on_continueButton_clicked();
 
 private:

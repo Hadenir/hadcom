@@ -47,4 +47,3 @@ void ModeChooser::on_continueButton_clicked()
 
     this->accept();
 }
-

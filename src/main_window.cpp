@@ -1,16 +1,11 @@
 #include "main_window.h"
 
 #include <QProgressBar>
-#include <QProgressDialog>
-#include <QMessageBox>
 
-#include "connection.h"
 #include "local_client.h"
-#include "server.h"
-#include "version.h"
 
-MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
-        : QMainWindow(parent), m_userInfo(std::move(userInfo))
+MainWindow::MainWindow(QWidget* parent)
+        : QMainWindow(parent)
 {
     setupUi(this);
 
@@ -23,46 +18,8 @@ MainWindow::MainWindow(UserInfo userInfo, QWidget* parent)
     m_progressDialog->setBar(progressBar);
     m_progressDialog->setMinimumDuration(0);
     connect(m_progressDialog, SIGNAL(canceled()), this, SLOT(close()));
-}
-
-bool MainWindow::setup()
-{
-    qDebug() << "You are using HadCom v." << VERSION_STRING;
-
-    if(m_userInfo.mode == Mode::SERVER)
-    {
-        qDebug() << "Starting the server...";
-
-        m_server = new Server(this);
-        if(!m_server->bind(m_userInfo.port))
-        {
-            QMessageBox::critical(this, "Server error occured", "Error: Couldn't bind to the port!");
-            return false;
-        }
-
-        qDebug() << "Server started!";
-    }
-
-    qDebug() << "Connecting to the server...";
-
-    auto connection = new Connection(this);
-    connect(connection, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(on_error()));
-
-    qDebug() << "Created connection!";
-
-    m_localClient = new LocalClient(connection, this);
-    connect(m_localClient, SIGNAL(connected()), this, SLOT(on_connected()));
-    connect(m_localClient, SIGNAL(loggedIn(const QList<QString>&)), this, SLOT(on_loggedIn(const QList<QString>&)));
-    connect(m_localClient, SIGNAL(clientJoined(QString)), this, SLOT(on_clientJoined(QString)));
-    connect(m_localClient, SIGNAL(clientLeft(QString)), this, SLOT(on_clientLeft(QString)));
-    connect(m_localClient, SIGNAL(messageReceived(QString, QString)), this, SLOT(on_messageReceived(QString, QString)));
-    m_localClient->setNickname(m_userInfo.nickname);
-
-    connection->connectToHost(m_userInfo.address, m_userInfo.port);
 
     m_progressDialog->open();
-
-    return true;
 }
 
 void MainWindow::on_connected()
@@ -73,11 +30,13 @@ void MainWindow::on_connected()
 
 void MainWindow::on_loggedIn(const QList<QString>& nicknames)
 {
-    accountLabel->setText("Logged as " + m_localClient->getNickname());
+    auto localClient = (LocalClient*) sender();
+
+    accountLabel->setText("Logged as " + localClient->getNickname());
 
     for(const auto& nickname : nicknames)
     {
-        if(nickname != m_localClient->getNickname())
+        if(nickname != localClient->getNickname())
             clientsList->addItem(nickname);
     }
 
@@ -92,7 +51,7 @@ void MainWindow::on_sendButton_clicked()
     if(message.isEmpty())
         return;
 
-    m_localClient->sendMessage(message);
+    emit messageSent(message);
 }
 
 void MainWindow::on_clientJoined(QString nickname)
@@ -115,12 +74,4 @@ void MainWindow::on_messageReceived(QString sender, QString message)
     QApplication::alert(this);
 
     chat->append("&lt;" + sender.toHtmlEscaped() + "&gt; " + message.toHtmlEscaped() + "\n");
-}
-
-void MainWindow::on_error()
-{
-    qDebug() << "Server error!";
-    auto socket = (QTcpSocket*) sender();
-    QMessageBox::critical(this, "An error occured", "Error: " + socket->errorString() + "!");
-    this->close();
 }

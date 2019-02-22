@@ -1,22 +1,12 @@
 #include <QApplication>
-#include <QDebug>
-#include "main_window.h"
-#include "mode_chooser.h"
+
+#include "application.h"
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
+    QApplication qapp(argc, argv);
 
-    ModeChooser modeChooser;
-    if(modeChooser.exec() == QDialog::Rejected)
-        return 0;
-
-    UserInfo userInfo = modeChooser.getUserInfo();
-
-    MainWindow mainWindow(userInfo);
-    mainWindow.show();
-    if(!mainWindow.setup())
-        return 0;
+    Application app(argc, argv);
 
     return QApplication::exec();
 }
