@@ -1,18 +1,12 @@
 #include "connection.h"
 
 #include <QHostAddress>
-#include <QTimer>
 
-#include "packets/packet.h"
 #include "packets/packet_factory.h"
 
 Connection::Connection(QObject* parent)
         : QTcpSocket(parent)
 {
-    m_timeoutTimer = new QTimer(this);
-    m_timeoutTimer->setSingleShot(true);
-    connect(m_timeoutTimer, SIGNAL(timeout()), this, SLOT(on_timeout()));
-
     connect(this, SIGNAL(connected()), this, SLOT(on_connected()));
     connect(this, SIGNAL(readyRead()), this, SLOT(on_dataReceived()));
     connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(on_error()));
@@ -32,8 +26,6 @@ void Connection::connectToHost(const QString& hostName, quint16 port)
         QTcpSocket::connectToHost(QHostAddress::LocalHost, port);
     else
         QTcpSocket::connectToHost(hostName, port);
-
-    m_timeoutTimer->start(TIMEOUT);
 }
 
 bool Connection::send(const Packet& packet)
@@ -54,11 +46,6 @@ bool Connection::send(const Packet& packet)
 
     delete[] data;
     return true;
-}
-
-void Connection::on_connected()
-{
-    m_timeoutTimer->stop();
 }
 
 void Connection::on_dataReceived()
@@ -130,17 +117,5 @@ void Connection::on_dataReceived()
         }
     }
     m_processing = false;
-}
-
-void Connection::on_timeout()
-{
-    setSocketError(SocketError::SocketTimeoutError);
-    setErrorString("Socket timed out");
-    emit error(SocketError::SocketTimeoutError);
-}
-
-void Connection::on_error()
-{
-    m_timeoutTimer->stop();
 }
 

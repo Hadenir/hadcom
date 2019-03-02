@@ -2,8 +2,7 @@
 
 #include <QTcpSocket>
 
-class QTimer;
-class Packet;
+#include "packets/packet.h"
 
 class Connection : public QTcpSocket
 {
@@ -22,18 +21,10 @@ signals:
     void packetReceived(Packet* packet);
 
 private slots:
-    void on_connected();
-
     void on_dataReceived();
-
-    void on_timeout();
-
-    void on_error();
 
 private:
     const char HEADER_VAL = (char)0xBF;
-
-    const int TIMEOUT = 5000;
 
     enum ReceiveState
     {
@@ -48,6 +39,4 @@ private:
     size_t m_payloadSize = 0;
 
     Packet* m_currentPacket = nullptr;
-
-    QTimer* m_timeoutTimer;
 };
