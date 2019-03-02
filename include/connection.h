@@ -33,7 +33,7 @@ private slots:
 private:
     const char HEADER_VAL = (char)0xBF;
 
-    const int TIMEOUT = 2500;
+    const int TIMEOUT = 5000;
 
     enum ReceiveState
     {
