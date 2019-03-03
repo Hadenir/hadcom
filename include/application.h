@@ -33,6 +33,13 @@ private:
 
     const int TIMEOUT_TIME = 10000;
 
+    enum class Mode
+    {
+        CLIENT,
+        SERVER,
+        HYBRID
+    } m_mode;
+
     LocalClient* m_localClient;
 
     Server* m_server;

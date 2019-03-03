@@ -7,18 +7,21 @@
 
 Application::Application(int argc, char** argv)
 {
-    // for(int i = 0; i < argc; ++i)
-    // {
-    //     if(strcmp(argv[i], "--server") == 0)
-    //     {
-    //         UserInfo info;
-    //         info.nickname = "SERVER";
-    //         info.port = 2220;
-    //         setup(info);
-    //     }
-    // }
-
     loadConfig();
+
+    for(int i = 0; i < argc; ++i)
+    {
+        if(strcmp(argv[i], "--server") == 0)
+        {
+            m_userInfo.server = true;
+            m_mode = Mode::SERVER;
+
+            setup();
+            return;
+        }
+    }
+
+    m_mode = m_userInfo.server ? Mode::HYBRID : Mode::CLIENT;
 
     m_mainWindow = new MainWindow();
     connect(m_mainWindow, SIGNAL(messageSent(QString)), this, SLOT(on_messageSent(QString)));
@@ -77,7 +80,7 @@ void Application::on_error()
 
 void Application::setup()
 {
-    if(m_userInfo.mode == Mode::SERVER)
+    if(m_mode == Mode::SERVER || m_mode == Mode::HYBRID)
     {
         qInfo() << "Starting the server...";
 
@@ -91,26 +94,29 @@ void Application::setup()
         qInfo() << "Server started!";
     }
 
-    qInfo() << "Connecting to the server...";
+    if(m_mode == Mode::CLIENT || m_mode == Mode::HYBRID)
+    {
+        qInfo() << "Connecting to the server...";
 
-    auto connection = new Connection(this);
-    connect(connection, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(on_error()));
+        auto connection = new Connection(this);
+        connect(connection, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(on_error()));
 
-    qInfo() << "Created connection!";
+        qInfo() << "Created connection!";
 
-    m_localClient = new LocalClient(connection, this);
-    connect(m_localClient, SIGNAL(connected()), this, SLOT(on_connected()));
-    connect(m_localClient, SIGNAL(loggedIn(const QList<QString>&)), m_mainWindow,
-            SLOT(on_loggedIn(const QList<QString>&)));
-    connect(m_localClient, SIGNAL(clientJoined(QString)), m_mainWindow, SLOT(on_clientJoined(QString)));
-    connect(m_localClient, SIGNAL(clientLeft(QString)), m_mainWindow, SLOT(on_clientLeft(QString)));
-    connect(m_localClient, SIGNAL(messageReceived(QString, QString)), m_mainWindow,
-            SLOT(on_messageReceived(QString, QString)));
-    m_localClient->setNickname(m_userInfo.nickname);
+        m_localClient = new LocalClient(connection, this);
+        connect(m_localClient, SIGNAL(connected()), this, SLOT(on_connected()));
+        connect(m_localClient, SIGNAL(loggedIn(const QList<QString>&)), m_mainWindow,
+                SLOT(on_loggedIn(const QList<QString>&)));
+        connect(m_localClient, SIGNAL(clientJoined(QString)), m_mainWindow, SLOT(on_clientJoined(QString)));
+        connect(m_localClient, SIGNAL(clientLeft(QString)), m_mainWindow, SLOT(on_clientLeft(QString)));
+        connect(m_localClient, SIGNAL(messageReceived(QString, QString)), m_mainWindow,
+                SLOT(on_messageReceived(QString, QString)));
+        m_localClient->setNickname(m_userInfo.nickname);
 
-    connection->connectToHost(m_userInfo.address, m_userInfo.port);
-    if(!connection->waitForConnected(TIMEOUT_TIME))
-        return;
+        connection->connectToHost(m_userInfo.address, m_userInfo.port);
+        if(!connection->waitForConnected(TIMEOUT_TIME))
+            return;
+    }
 }
 
 void Application::loadConfig()
@@ -122,8 +128,8 @@ void Application::loadConfig()
     m_userInfo.address = address;
     quint16 port = (quint16) config.value("Port", 1205).toInt();
     m_userInfo.port = port;
-    bool serverMode = config.value("ServerMode", false).toBool();
-    m_userInfo.mode = serverMode ? Mode::SERVER : Mode::CLIENT;
+    bool server = config.value("Server", false).toBool();
+    m_userInfo.server = server;
 }
 
 void Application::saveConfig()
@@ -132,5 +138,5 @@ void Application::saveConfig()
     config.setValue("Nickname", m_userInfo.nickname);
     config.setValue("IpAddress", m_userInfo.address);
     config.setValue("Port", m_userInfo.port);
-    config.setValue("ServerMode", m_userInfo.mode == Mode::SERVER);
+    config.setValue("ServerMode", m_userInfo.server);
 }

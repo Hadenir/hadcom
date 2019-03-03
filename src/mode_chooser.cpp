@@ -18,7 +18,7 @@ void ModeChooser::setUserInfo(UserInfo userInfo)
     nicknameInput->setText(userInfo.nickname);
     addressInput->setText(userInfo.address);
     portInput->setText(QString::number(userInfo.port));
-    serverCheckbox->setChecked(userInfo.mode == Mode::SERVER);
+    serverCheckbox->setChecked(userInfo.server);
 }
 
 UserInfo ModeChooser::getUserInfo() const
@@ -58,7 +58,7 @@ void ModeChooser::on_continueButton_clicked()
     }
     m_userInfo.port = portInput->text().toUShort();
 
-    m_userInfo.mode = serverCheckbox->checkState() == Qt::Checked ? Mode::SERVER : Mode::CLIENT;
+    m_userInfo.server = serverCheckbox->checkState() == Qt::Checked;
 
     continueButton->setDisabled(true);
 
