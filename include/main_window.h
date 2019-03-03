@@ -13,8 +13,6 @@ signals:
     void messageSent(QString message);
 
 private slots:
-    void on_connected();
-
     void on_loggedIn(const QList<QString>& nicknames);
 
     void on_sendButton_clicked();

@@ -11,9 +11,24 @@ ModeChooser::ModeChooser(QWidget* parent)
     portInput->setValidator(new QIntValidator(0, 65535, this));
 }
 
+void ModeChooser::setUserInfo(UserInfo userInfo)
+{
+    m_userInfo = userInfo;
+
+    nicknameInput->setText(userInfo.nickname);
+    addressInput->setText(userInfo.address);
+    portInput->setText(QString::number(userInfo.port));
+    serverCheckbox->setChecked(userInfo.mode == Mode::SERVER);
+}
+
 UserInfo ModeChooser::getUserInfo() const
 {
     return m_userInfo;
+}
+
+void ModeChooser::reset()
+{
+    continueButton->setDisabled(false);
 }
 
 void ModeChooser::on_continueButton_clicked()
@@ -45,5 +60,7 @@ void ModeChooser::on_continueButton_clicked()
 
     m_userInfo.mode = serverCheckbox->checkState() == Qt::Checked ? Mode::SERVER : Mode::CLIENT;
 
-    this->accept();
+    continueButton->setDisabled(true);
+
+    emit continued();
 }

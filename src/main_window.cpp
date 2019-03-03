@@ -8,11 +8,6 @@ MainWindow::MainWindow(QWidget* parent)
     setupUi(this);
 }
 
-void MainWindow::on_connected()
-{
-    accountLabel->setText("Connected to host");
-}
-
 void MainWindow::on_loggedIn(const QList<QString>& nicknames)
 {
     auto localClient = (LocalClient*) sender();

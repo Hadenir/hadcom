@@ -7,10 +7,7 @@
 Connection::Connection(QObject* parent)
         : QTcpSocket(parent)
 {
-    connect(this, SIGNAL(connected()), this, SLOT(on_connected()));
     connect(this, SIGNAL(readyRead()), this, SLOT(on_dataReceived()));
-    connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(on_error()));
-
     m_receiveState = ReceiveState::HEADER;
 }
 
