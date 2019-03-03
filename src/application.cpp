@@ -42,11 +42,13 @@ Application::~Application()
 void Application::on_continued()
 {
     m_userInfo = m_modeChooser->getUserInfo();
+    m_mode = m_userInfo.server ? Mode::HYBRID : Mode::CLIENT;
 
     // m_modeChooser->close();
     // m_mainWindow->show();
 
-    setup();
+    if(!setup())
+        QApplication::quit();
 
     m_modeChooser->accept();
     m_mainWindow->show();
@@ -74,11 +76,13 @@ void Application::on_error()
     qInfo() << "Error:" << socket->errorString();
 
     m_modeChooser->reset();
-    delete m_server;
-    delete m_localClient;
+    if(m_mode == Mode::SERVER || m_mode == Mode::HYBRID)
+        delete m_server;
+    if(m_mode == Mode::CLIENT || m_mode == Mode::HYBRID)
+        delete m_localClient;
 }
 
-void Application::setup()
+bool Application::setup()
 {
     if(m_mode == Mode::SERVER || m_mode == Mode::HYBRID)
     {
@@ -88,7 +92,7 @@ void Application::setup()
         if(!m_server->bind(m_userInfo.port))
         {
             QMessageBox::critical(m_modeChooser, "Server error occured", "Error: Couldn't bind to the port!");
-            QApplication::quit();
+            return false;
         }
 
         qInfo() << "Server started!";
@@ -115,8 +119,10 @@ void Application::setup()
 
         connection->connectToHost(m_userInfo.address, m_userInfo.port);
         if(!connection->waitForConnected(TIMEOUT_TIME))
-            return;
+            return false;
     }
+
+    return true;
 }
 
 void Application::loadConfig()

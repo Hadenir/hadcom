@@ -50,7 +50,7 @@ private:
 
     UserInfo m_userInfo;
 
-    void setup();
+    bool setup();
 
     void loadConfig();
 
