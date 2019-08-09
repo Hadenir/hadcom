@@ -80,6 +80,8 @@ void Application::on_error()
         delete m_server;
     if(m_mode == Mode::CLIENT || m_mode == Mode::HYBRID)
         delete m_localClient;
+
+    QApplication::quit();
 }
 
 bool Application::setup()
